@@ -16,7 +16,8 @@
       font-family: 'Georgia', serif;
       background: #000;
       color: #fff;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
       cursor: none;
     }
 
@@ -30,11 +31,14 @@
     }
 
     .content {
-      position: fixed;
+      position: relative;
+      width: 100vw;
+      min-height: 100vh;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
+      /* //transform: translate(-50%, -50%); */
       text-align: center;
+
       z-index: 10;
       transition: opacity 0.8s ease, transform 0.8s ease;
     }
@@ -44,6 +48,12 @@
       transform: translate(-50%, -50%) translateY(-50px);
       pointer-events: none;
     }
+
+    .scroll-wrapper {
+      display: flex;
+      flex-direction: column;
+    }
+
 
     .title {
       font-size: clamp(2rem, 8vw, 4rem);
@@ -168,18 +178,19 @@
   <div class="top-instruction" id="topInstruction">Scroll down ↓</div>
 
   <div class="custom-cursor" id="cursor"></div>
+  <div class="scroll-wrapper">
+    <div class="content" id="screen1">
+      <h1 class="title">Hi I'm Nik</h1>
+      <p class="subtitle">4th year student from India who knows a lil bit about everything!</p>
+    </div>
 
-  <div class="content" id="screen1">
-    <h1 class="title">Hi I'm Nik</h1>
-    <p class="subtitle">4th year student from India who knows a lil bit about everything!</p>
-  </div>
-
-  <div class="content hidden" id="screen2">
-    <h1 class="title">ARE YOU A...</h1>
-    <div class="triggers">
-      <span class="role" id="role0">Front End Dev</span> |
-      <span class="role" id="role1">SWE</span> |
-      <span class="role" id="role2">Data Scientist / Analyst</span>
+    <div class="content hidden" id="screen2">
+      <h1 class="title">ARE YOU A...</h1>
+      <div class="triggers">
+        <span class="role" id="role0">Front End Dev</span> |
+        <span class="role" id="role1">SWE</span> |
+        <span class="role" id="role2">Data Scientist / Analyst</span>
+      </div>
     </div>
   </div>
 
@@ -354,14 +365,24 @@
       );
     });
 
+    // document.addEventListener('touchmove', (e) => {
+    //   e.preventDefault();
+    //   const touch = e.touches[0];
+    //   drawShootingStar(
+    //     touch.clientX - window.innerWidth / 2,
+    //     touch.clientY - window.innerHeight / 2
+    //   );
+    // });
     document.addEventListener('touchmove', (e) => {
-      e.preventDefault();
-      const touch = e.touches[0];
-      drawShootingStar(
-        touch.clientX - window.innerWidth / 2,
-        touch.clientY - window.innerHeight / 2
-      );
-    });
+      if (e.touches.length === 1) {
+        const touch = e.touches[0];
+        drawShootingStar(
+          touch.clientX - window.innerWidth / 2,
+          touch.clientY - window.innerHeight / 2
+        );
+      }
+    }, { passive: true });
+
 
     // Animation loop
     function animate() {
